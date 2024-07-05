@@ -16,7 +16,7 @@ const port = 3000;
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-//server.use("/", require("./Routers/imgGenRouter"));
+server.use("/", require("./Routers/imgGenRouter"));
 
 
 // 서버 설정
