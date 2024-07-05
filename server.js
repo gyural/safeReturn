@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
@@ -9,11 +10,22 @@ const cron = require('node-cron');
 dotenv.config();
 const connect = require('./mongo');
 connect();
+=======
+require("dotenv").config();
+const express = require("express");
 
+const app = express();
+const port = 3000;
+>>>>>>> 0eb93ae3d8400db8bda36901ceb7a28e70596d91
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get("/", require("./Routers/imgGenRouter"));
+
+<<<<<<< HEAD
 
 // 서버 설정
-server.set('port', process.env.PORT || 8008);
 server.use(express.json());
 server.use(express.urlencoded({extended : true}));
 server.use(express.static(path.join(__dirname,'public'))); 
@@ -42,7 +54,7 @@ sequelize.sync({force : false})
 cron.schedule('*/7 * * * *', async () => {
     try {
         console.log('Sending request to missingApi/getMissingRouter');
-        await axios.get('http://localhost:8008/missingApi/getMissingInfo');
+        await axios.get('http://localhost:3000/missingApi/getMissingInfo');
         console.log('경찰청 실종자 정보 업데이트 완료',new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
     } catch (err) {
         console.error('ERROR ! : 경찰청 실종자 업데이트 중 오류 발생', err);
@@ -53,7 +65,7 @@ cron.schedule('*/7 * * * *', async () => {
 cron.schedule('*/10 * * * * ', async () => {
     try {
         console.log('Sending request to /messageApi/getMessageParsing');
-        await axios.get('http://localhost:8008/messageApi/getMessageParsing');
+        await axios.get('http://localhost:3000/messageApi/getMessageParsing');
         console.log('문자메시지 정보 업데이트 완료',new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }));
     } catch (err) {
         console.error('ERROR ! : 행정안전부 문자메시지 업데이트 중 오류 발생', err);
@@ -72,6 +84,8 @@ server.use('/messageApi', messageParsingRouter);
 
 
 
-server.listen(server.get('port'), () => {
-    console.log(`Server is running on port`, server.get('port'));
+=======
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+>>>>>>> 0eb93ae3d8400db8bda36901ceb7a28e70596d91
 });
