@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
@@ -10,20 +9,15 @@ const cron = require('node-cron');
 dotenv.config();
 const connect = require('./mongo');
 connect();
-=======
 require("dotenv").config();
-const express = require("express");
 
-const app = express();
 const port = 3000;
->>>>>>> 0eb93ae3d8400db8bda36901ceb7a28e70596d91
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
 
-app.get("/", require("./Routers/imgGenRouter"));
+//server.use("/", require("./Routers/imgGenRouter"));
 
-<<<<<<< HEAD
 
 // 서버 설정
 server.use(express.json());
@@ -84,8 +78,6 @@ server.use('/messageApi', messageParsingRouter);
 
 
 
-=======
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
->>>>>>> 0eb93ae3d8400db8bda36901ceb7a28e70596d91
 });
