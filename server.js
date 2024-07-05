@@ -1,9 +1,21 @@
 const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+const morgan = require('morgan');
+const server = express();
+dotenv.config();
 
-const app = express();
-const port = 3005;
+
+server.set('port', process.env.PORT || 8008);
+server.use(express.json());
+server.use(express.urlencoded({extended : true}));
+server.use(express.static(path.join(__dirname,'public'))); 
+server.use(morgan('dev'));
 
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+
+
+
+server.listen(server.get('port'), () => {
+    console.log(`Server is running on port`, server.get('port'));
 });
