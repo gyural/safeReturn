@@ -16,7 +16,7 @@ const port = 3000;
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-server.use("/", require("./Routers/imgGenRouter"));
+server.use("/imgGen", require("./Routers/imgGenRouter"));
 
 
 // 서버 설정
@@ -41,7 +41,6 @@ sequelize.sync({force : false})
 .catch((err=>{
     console.error(err);
 }));
-
 
 
 
