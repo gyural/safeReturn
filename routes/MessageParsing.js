@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 // 미들웨어로 부터 정리된 데이터를 NoSql(몽고 디비)에 저장하는 코드
 const {Op} = require('sequelize');
 const express = require('express');
@@ -6,10 +8,19 @@ const Message = require('../mongo/message');
 const messageParsingRouter = express.Router();
 const {getMessageInfo} = require('../middlewares/index');
 
+const openai = require('openai')
+const dalle = new openai.OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
+
+const deepl = require('deepl-node')
+const translator = new deepl.Translator(process.env.DEEPL_API_KEY)
+
 
 // GET 요청 처리
 messageParsingRouter.get('/getMessageParsing', getMessageInfo, async (req, res) => {
     try {
+        let new_missing_details = [];
       
         
         const missingPersonMessages = res.locals.missingPersonMessages; // api로 부터 받아온 데이터
@@ -34,9 +45,33 @@ messageParsingRouter.get('/getMessageParsing', getMessageInfo, async (req, res) 
                     age: missingPersonMessage.age,
                     details: detailsWithAge
                 });
-                
+
+                new_missing_details.push(detailsWithAge)
+
             } 
         }));
+
+        // 이미지 생성 코드
+
+        let new_missing = new_missing_details.length
+        while (new_missing > 0) {
+            const prompt = await translator.translateText(new_missing_details.shift(), 'ko', 'en-US')
+            
+            console.log(prompt.text)
+
+            const response = await dalle.images.generate({
+                model: "dall-e-3",
+                prompt: `${prompt.text}, korean, asian, whole body, highquality, reality, only people, without additional elements, one's front view, Appearance from behind, two scenes`,
+                n: 1,
+                size: "1024x1024",
+            });
+            image_url = response.data[0].url;
+        
+            console.log(image_url)
+
+            new_missing--
+        }
+
 
    ///// -------------------------------------------------------------- 위 코드 아래코드 순서 중요
         
